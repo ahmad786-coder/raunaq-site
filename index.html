@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raunaq (رونق) — Real-Time Wedding Memory Collective</title>
+  <meta name="description" content="Every guest's photo, video, and audio wish collected in real time. Full-resolution originals, Live Wall for the reception, and zero guest app downloads.">
+
+  <!-- Google Fonts: Playfair Display, Inter, Noto Nastaliq Urdu -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM: RAUNAQ PALETTE & TYPOGRAPHY
+       Deep Burgundy (#4A081A), Royal Burgundy (#881337), Warm Antique Cream (#FFFBF3),
+       Champagne Gold Accent (#C6A15B), Light Gold (#E6CA85), Dark Ink Charcoal (#1F161A).
+       Body Font: Inter (Design System). Headings: Playfair Display. Urdu: Noto Nastaliq Urdu.
+       ========================================================================== */
+    :root {
+      --burgundy-deep: #4A081A;
+      --burgundy-base: #6B0F2B;
+      --burgundy-rich: #881337;
+      --burgundy-light: #9F1239;
+      --cream-light: #FFFDF9;
+      --cream-base: #FFFBF3;
+      --cream-dark: #F7F1E5;
+      --cream-border: #EADBCE;
+      --gold-deep: #99752D;
+      --gold-base: #C6A15B;
+      --gold-light: #E7C982;
+      --gold-shimmer: #F5E5BE;
+      --ink-charcoal: #23161C;
+      --ink-muted: #5C4B52;
+      --white-pure: #FFFFFF;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-urdu: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Urdu Typesetting', serif;
+    }
+
+    /* Reset & Base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--ink-charcoal);
+      background-color: var(--cream-base);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Typography Utilities */
+    .font-serif { font-family: var(--font-serif); }
+    .font-urdu { font-family: var(--font-urdu); }
+    .font-sans { font-family: var(--font-sans); }
+
+    /* SVG Noise Grain Overlay (Subtle Texture) */
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    @media (min-width: 768px) {
+      .container { padding: 0 40px; }
+    }
+
+    /* Sticky Navigation Header */
+    .sticky-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 68px;
+      background: rgba(74, 8, 26, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(198, 161, 91, 0.22);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+
+    .sticky-header.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--white-pure);
+    }
+
+    .header-logo-text {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      background: linear-gradient(135deg, var(--gold-shimmer) 0%, var(--gold-base) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-urdu {
+      font-family: var(--font-urdu);
+      font-size: 1.25rem;
+      color: var(--gold-light);
+      line-height: 1;
+      padding-top: 4px;
+    }
+
+    .header-nav {
+      display: none;
+      align-items: center;
+      gap: 28px;
+    }
+
+    @media (min-width: 840px) {
+      .header-nav { display: flex; }
+    }
+
+    .header-link {
+      color: rgba(255, 251, 243, 0.8);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      position: relative;
+      transition: color 0.25s ease;
+      padding: 4px 0;
+    }
+
+    .header-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--gold-base);
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .header-link:hover {
+      color: var(--gold-shimmer);
+    }
+
+    .header-link:hover::after {
+      width: 100%;
+    }
+
+    /* Buttons & Sheen Sweep */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 28px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid transparent;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, background 0.25s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Sheen Sweep */
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(
+        60deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.25) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: rotate(25deg);
+      pointer-events: none;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn:hover::after {
+      transform: translateX(380%) rotate(25deg);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-base) 100%);
+      color: var(--burgundy-deep);
+      border-color: var(--gold-shimmer);
+      box-shadow: 0 4px 18px rgba(198, 161, 91, 0.28);
+    }
+
+    .btn-gold:hover {
+      box-shadow: 0 8px 24px rgba(198, 161, 91, 0.42);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline-gold {
+      background: transparent;
+      color: var(--gold-shimmer);
+      border-color: rgba(198, 161, 91, 0.5);
+    }
+
+    .btn-outline-gold:hover {
+      background: rgba(198, 161, 91, 0.1);
+      border-color: var(--gold-base);
+      color: var(--white-pure);
+      transform: translateY(-2px);
+    }
+
+    .btn-burgundy {
+      background: var(--burgundy-rich);
+      color: var(--cream-base);
+      border-color: rgba(198, 161, 91, 0.3);
+    }
+
+    .btn-burgundy:hover {
+      background: var(--burgundy-deep);
+      border-color: var(--gold-base);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(74, 8, 26, 0.35);
+    }
+
+    .btn-sm {
+      padding: 8px 18px;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ==========================================================================
+       SECTION 0: CINEMATIC HERO (100svh Burgundy Stage)
+       ========================================================================== */
+    .hero-stage {
+      position: relative;
+      min-height: 100svh;
+      width: 100%;
+      background: radial-gradient(circle at 50% 38%, #6B0F2B 0%, #4A081A 75%, #350512 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px 80px;
+      overflow: hidden;
+      text-align: center;
+      color: var(--cream-base);
+    }
+
+    /* Oversized Ghost Nastaliq Background Calligraphy */
+    .hero-ghost-calligraphy {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      font-family: var(--font-urdu);
+      font-size: clamp(14rem, 36vw, 32rem);
+      color: var(--gold-base);
+      opacity: 0.055;
+      line-height: 1;
+      user-select: none;
+      pointer-events: none;
+      z-index: 1;
+      transform: translate(-50%, -50%);
+      will-change: transform;
+      animation: ghostDrift 36s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+    }
+
+    @keyframes ghostDrift {
+      0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+      50% { transform: translate(-47%, -52%) scale(1.04) rotate(1.5deg); }
+      100% { transform: translate(-53%, -48%) scale(0.98) rotate(-1.5deg); }
+    }
+
+    /* Fine Gold Hairline Geometry in Hero */
+    .hero-hairline-circle {
+      position: absolute;
+      width: clamp(340px, 60vw, 750px);
+      height: clamp(340px, 60vw, 750px);
+      border-radius: 50%;
+      border: 1px solid rgba(198, 161, 91, 0.12);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Giant Mehrab Arch Outline */
+    .hero-arch-container {
+      position: relative;
+      z-index: 3;
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 56px 28px 48px;
+    }
+
+    .hero-arch-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      filter: drop-shadow(0 0 16px rgba(198, 161, 91, 0.22));
+    }
+
+    .arch-outline-path {
+      fill: none;
+      stroke: url(#goldArchGrad);
+      stroke-width: 1.5;
+      stroke-dasharray: 2200;
+      stroke-dashoffset: 0;
+      animation: drawArch 2.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes drawArch {
+      0% { stroke-dashoffset: 2200; opacity: 0; }
+      20% { opacity: 1; }
+      100% { stroke-dashoffset: 0; opacity: 1; }
+    }
+
+    /* Hero Text Stagger */
+    .hero-content {
+      position: relative;
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-badge {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--gold-light);
+      margin-bottom: 14px;
+      opacity: 0;
+      animation: riseFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.8rem, 6.5vw, 5.2rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #FFFFFF 20%, var(--gold-shimmer) 70%, var(--gold-base) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      opacity: 0;
+      animation: riseFade 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+    }
+
+    /* RESTORED LOCKED URDU TAGLINE */
+    .hero-urdu-stack {
+      font-family: var(--font-urdu);
+      font-size: clamp(2rem, 4.8vw, 3.4rem);
+      color: var(--gold-light);
+      line-height: 1.45;
+      margin: 12px 0 20px;
+      direction: rtl;
+      text-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      animation: riseFade 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+    }
+
+    .hero-lead {
+      font-size: clamp(1rem, 2.1vw, 1.25rem);
+      font-weight: 300;
+      color: rgba(255, 251, 243, 0.88);
+      max-width: 520px;
+      margin-bottom: 34px;
+      line-height: 1.55;
+      letter-spacing: 0.01em;
+      opacity: 0;
+      animation: riseFade 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      width: 100%;
+      max-width: 440px;
+      margin: 0 auto;
+      opacity: 0;
+      animation: riseFade 1.1s cubic-bezier(0.16, 1, 0.3, 1) 1.1s forwards;
+    }
+
+    @media (min-width: 560px) {
+      .hero-ctas {
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+
+    /* Scroll Cue */
+    .hero-scroll-cue {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(198, 161, 91, 0.75);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeIn 1.2s ease 1.6s forwards;
+      text-decoration: none;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 36px;
+      background: linear-gradient(to bottom, var(--gold-base), transparent);
+      animation: scrollPulse 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    }
+
+    @keyframes scrollPulse {
+      0% { transform: scaleY(0); transform-origin: top; opacity: 0; }
+      50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      50.1% { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+      100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+    }
+
+    @keyframes riseFade {
+      0% { opacity: 0; transform: translateY(22px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    /* ==========================================================================
+       SECTION 0B: RESTORED MARQUEE TICKER (Exact Order)
+       Mehndi ✦ Baraat ✦ Walima ✦ رونق ✦ Voice Guestbook ✦ Live Wall ✦ Purdah Mode ✦
+       ========================================================================== */
+    .ticker-wrap {
+      width: 100%;
+      overflow: hidden;
+      background: #3B0614;
+      border-top: 1px solid rgba(198, 161, 91, 0.3);
+      border-bottom: 1px solid rgba(198, 161, 91, 0.3);
+      padding: 14px 0;
+      position: relative;
+      z-index: 10;
+    }
+
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      animation: tickerLoop 36s linear infinite;
+      will-change: transform;
+    }
+
+    .ticker-track:hover {
+      animation-play-state: paused;
+    }
+
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 20px;
+      padding: 0 20px;
+      color: var(--gold-shimmer);
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+
+    .ticker-item .urdu-tag {
+      font-family: var(--font-urdu);
+      font-size: 1.35rem;
+      color: var(--gold-light);
+      padding-top: 2px;
+    }
+
+    .ticker-item .ticker-star {
+      color: var(--gold-base);
+      font-size: 0.85rem;
+      opacity: 0.7;
+    }
+
+    @keyframes tickerLoop {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ==========================================================================
+       EDITORIAL SECTION SYSTEM: HEADERS & LABELS
+       ========================================================================== */
+    .section-editorial {
+      padding: 96px 0;
+      position: relative;
+    }
+
+    @media (min-width: 768px) {
+      .section-editorial { padding: 128px 0; }
+    }
+
+    .section-label-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .section-kicker {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      font-weight: 600;
+      color: var(--gold-deep);
+      white-space: nowrap;
+    }
+
+    .section-kicker.on-dark {
+      color: var(--gold-light);
+    }
+
+    .section-hairline {
+      height: 1px;
+      flex-grow: 1;
+      background: linear-gradient(to right, rgba(198, 161, 91, 0.4), transparent);
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4.2vw, 3.2rem);
+      line-height: 1.15;
+      font-weight: 700;
+      color: var(--ink-charcoal);
+      margin-bottom: 20px;
+      letter-spacing: -0.015em;
+    }
+
+    .section-title.on-dark {
+      color: var(--cream-base);
+    }
+
+    .section-title .urdu-accent {
+      font-family: var(--font-urdu);
+      font-weight: 400;
+      color: var(--gold-deep);
+      font-size: 1.25em;
+      padding: 0 6px;
+      display: inline-block;
+      vertical-align: -0.1em;
+    }
+
+    .section-title.on-dark .urdu-accent {
+      color: var(--gold-light);
+    }
+
+    .section-sublead {
+      font-size: 1.1rem;
+      color: var(--ink-muted);
+      max-width: 640px;
+      margin-bottom: 56px;
+      line-height: 1.6;
+    }
+
+    .section-sublead.on-dark {
+      color: rgba(255, 251, 243, 0.85);
+    }
+
+    /* ==========================================================================
+       SECTION 1: HOW IT WORKS (Cream Background)
+       ========================================================================== */
+    .bg-cream {
+      background-color: var(--cream-base);
+    }
+
+    .journey-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+      position: relative;
+    }
+
+    @media (min-width: 860px) {
+      .journey-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 36px;
+      }
+
+      .journey-grid::before {
+        content: '';
+        position: absolute;
+        top: 48px;
+        left: 12%;
+        right: 12%;
+        height: 1px;
+        background: linear-gradient(to right, transparent, var(--gold-base), transparent);
+        z-index: 1;
+      }
+    }
+
+    .journey-step {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .journey-numeral {
+      font-family: var(--font-serif);
+      font-size: clamp(3.5rem, 6vw, 5rem);
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 18px;
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--gold-base);
+      letter-spacing: -0.04em;
+      display: inline-block;
+    }
+
+    .journey-step-title {
+      font-family: var(--font-serif);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--ink-charcoal);
+      margin-bottom: 12px;
+      line-height: 1.25;
+    }
+
+    .journey-step-desc {
+      font-size: 0.98rem;
+      color: var(--ink-muted);
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       SECTION 2: PURDAH GUARANTEE (Signature Promise on Dark Stage)
+       ========================================================================== */
+    .bg-burgundy-stage {
+      background: radial-gradient(circle at 50% 30%, #5C0B23 0%, #420616 80%, #2A030E 100%);
+      color: var(--cream-base);
+      border-top: 1px solid rgba(198, 161, 91, 0.25);
+      border-bottom: 1px solid rgba(198, 161, 91, 0.25);
+    }
+
+    .purdah-box-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    @media (min-width: 768px) {
+      .purdah-box-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 28px;
+      }
+    }
+
+    .purdah-card {
+      background: rgba(42, 3, 14, 0.6);
+      border: 1px solid rgba(198, 161, 91, 0.28);
+      border-radius: 8px;
+      padding: 36px 32px;
+      position: relative;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+    }
+
+    .purdah-card:hover {
+      border-color: var(--gold-base);
+      transform: translateY(-3px);
+    }
+
+    .purdah-card-num {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 12px;
+      letter-spacing: 0.05em;
+    }
+
+    .purdah-card-title {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      color: var(--white-pure);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .purdah-card-text {
+      font-size: 0.95rem;
+      color: rgba(255, 251, 243, 0.82);
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       SECTION 3: FEATURES HIGHLIGHT (Live Wall & Voice Guestbook)
+       ========================================================================== */
+    .features-split {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 36px;
+      margin-top: 48px;
+    }
+
+    @media (min-width: 860px) {
+      .features-split {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+      }
+    }
+
+    .feature-editorial-card {
+      background: var(--white-pure);
+      border: 1px solid var(--cream-border);
+      border-radius: 12px;
+      padding: 44px 36px;
+      box-shadow: 0 4px 20px rgba(35, 22, 28, 0.04);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .feature-editorial-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(35, 22, 28, 0.08);
+      border-color: var(--gold-base);
+    }
+
+    .feature-tag {
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--gold-deep);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .feature-title {
+      font-family: var(--font-serif);
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: var(--ink-charcoal);
+      margin-bottom: 14px;
+      line-height: 1.25;
+    }
+
+    .feature-desc {
+      font-size: 0.98rem;
+      color: var(--ink-muted);
+      line-height: 1.65;
+    }
+
+    /* ==========================================================================
+       SECTION 4: PACKAGES (Mehrab Arched Silhouette Cards)
+       ========================================================================== */
+    .packages-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 36px;
+      align-items: stretch;
+      margin-top: 48px;
+    }
+
+    @media (min-width: 960px) {
+      .packages-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 28px;
+        align-items: center;
+      }
+    }
+
+    .package-card {
+      position: relative;
+      background: var(--white-pure);
+      border: 1px solid var(--cream-border);
+      border-radius: 90px 90px 16px 16px;
+      padding: 56px 32px 40px;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(35, 22, 28, 0.05);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .package-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 40px rgba(198, 161, 91, 0.22);
+        border-color: var(--gold-base);
+      }
+    }
+
+    .package-card.featured {
+      background: radial-gradient(circle at 50% 20%, #7A1130 0%, #4D0619 100%);
+      color: var(--cream-base);
+      border: 1.5px solid var(--gold-base);
+      box-shadow: 0 14px 45px rgba(77, 6, 25, 0.28);
+    }
+
+    @media (min-width: 960px) {
+      .package-card.featured {
+        transform: scale(1.04);
+        z-index: 2;
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .package-card.featured:hover {
+          transform: scale(1.06) translateY(-8px);
+          box-shadow: 0 20px 50px rgba(198, 161, 91, 0.35);
+        }
+      }
+    }
+
+    .package-loved-pill {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-base) 100%);
+      color: var(--burgundy-deep);
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      padding: 6px 18px;
+      border-radius: 9999px;
+      box-shadow: 0 4px 12px rgba(198, 161, 91, 0.35);
+      white-space: nowrap;
+    }
+
+    .package-tier-name {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--ink-charcoal);
+    }
+
+    .package-card.featured .package-tier-name {
+      color: var(--white-pure);
+    }
+
+    .package-functions-tag {
+      font-size: 0.84rem;
+      color: var(--gold-deep);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 24px;
+    }
+
+    .package-card.featured .package-functions-tag {
+      color: var(--gold-light);
+    }
+
+    .package-price-wrap {
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--cream-border);
+    }
+
+    .package-card.featured .package-price-wrap {
+      border-bottom-color: rgba(198, 161, 91, 0.3);
+    }
+
+    .package-price {
+      font-family: var(--font-serif);
+      font-size: clamp(2.4rem, 4.5vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--gold-deep) 0%, var(--gold-base) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .package-card.featured .package-price {
+      background: linear-gradient(135deg, #FFFFFF 0%, var(--gold-shimmer) 60%, var(--gold-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .package-price-term {
+      font-size: 0.8rem;
+      color: var(--ink-muted);
+      margin-top: 6px;
+    }
+
+    .package-card.featured .package-price-term {
+      color: rgba(255, 251, 243, 0.75);
+    }
+
+    .package-specs {
+      list-style: none;
+      text-align: left;
+      margin-bottom: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex-grow: 1;
+    }
+
+    .package-spec-item {
+      font-size: 0.92rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--ink-muted);
+    }
+
+    .package-card.featured .package-spec-item {
+      color: rgba(255, 251, 243, 0.9);
+    }
+
+    .package-spec-item::before {
+      content: '✦';
+      color: var(--gold-base);
+      font-size: 0.8rem;
+    }
+
+    /* ==========================================================================
+       SECTION 5: FOR MARQUEES & PARTNERS (Exact Public Promise)
+       "For marquees & partners"
+       Earn 20% on every booking you bring — Rs 400 / Rs 700 / Rs 1,000 per package
+       paid on verified payments, with a written statement for every payout and your
+       own partner code; the host's price never changes.
+       ========================================================================== */
+    .partner-banner {
+      background: var(--white-pure);
+      border: 1px solid var(--cream-border);
+      border-radius: 12px;
+      padding: 56px 40px;
+      box-shadow: 0 6px 30px rgba(35, 22, 28, 0.04);
+      margin-top: 32px;
+    }
+
+    .partner-commissions-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin: 40px 0;
+      text-align: center;
+    }
+
+    @media (min-width: 680px) {
+      .partner-commissions-row {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+    }
+
+    .commission-box {
+      background: var(--cream-base);
+      border: 1px solid rgba(198, 161, 91, 0.35);
+      border-radius: 8px;
+      padding: 24px 16px;
+    }
+
+    .commission-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink-muted);
+      margin-bottom: 8px;
+    }
+
+    .commission-number {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+      font-weight: 700;
+      color: var(--gold-deep);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .commission-sub {
+      font-size: 0.82rem;
+      color: var(--ink-charcoal);
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       SECTION 5B: BOOKING FALLBACK CALLOUT (Target for #book in EMPTY state)
+       ========================================================================== */
+    .book-fallback-section {
+      background: var(--white-pure);
+      border: 1.5px dashed var(--gold-base);
+      border-radius: 12px;
+      padding: 40px 24px;
+      text-align: center;
+      margin: 48px auto 0;
+      max-width: 680px;
+    }
+
+    .book-fallback-text {
+      font-size: 1.05rem;
+      color: var(--burgundy-rich);
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       SECTION 6: FOOTER (Deep Burgundy Stage)
+       ========================================================================== */
+    .site-footer {
+      background: #340410;
+      color: var(--cream-base);
+      border-top: 1px solid rgba(198, 161, 91, 0.25);
+      padding: 80px 0 40px;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+      margin-bottom: 60px;
+    }
+
+    @media (min-width: 768px) {
+      .footer-content {
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 40px;
+      }
+    }
+
+    .footer-brand-title {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--white-pure) 0%, var(--gold-shimmer) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .footer-tagline-urdu {
+      font-family: var(--font-urdu);
+      font-size: 1.45rem;
+      color: var(--gold-light);
+      margin-bottom: 16px;
+      line-height: 1.4;
+      direction: rtl;
+    }
+
+    .footer-desc {
+      font-size: 0.95rem;
+      color: rgba(255, 251, 243, 0.75);
+      max-width: 380px;
+      line-height: 1.6;
+    }
+
+    .footer-col-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--gold-light);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-links a {
+      color: rgba(255, 251, 243, 0.8);
+      text-decoration: none;
+      font-size: 0.92rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--gold-shimmer);
+    }
+
+    .footer-bottom {
+      padding-top: 32px;
+      border-top: 1px solid rgba(198, 161, 91, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      text-align: center;
+      font-size: 0.82rem;
+      color: rgba(255, 251, 243, 0.6);
+    }
+
+    @media (min-width: 768px) {
+      .footer-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    /* ==========================================================================
+       SCROLL REVEALS & ACCESSIBILITY
+       ========================================================================== */
+    .js-active .reveal-item {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity;
+    }
+
+    .js-active .reveal-item.is-revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+      .hero-ghost-calligraphy {
+        transform: translate(-50%, -50%) !important;
+      }
+      .arch-outline-path {
+        stroke-dashoffset: 0 !important;
+        opacity: 1 !important;
+      }
+      .hero-badge, .hero-title, .hero-urdu-stack, .hero-lead, .hero-ctas, .hero-scroll-cue {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      .ticker-track {
+        transform: none !important;
+        animation: none !important;
+      }
+      .js-active .reveal-item {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Subtle noise grain -->
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- Sticky Header -->
+  <header class="sticky-header" id="stickyHeader">
+    <div class="container header-inner">
+      <a href="#hero" class="header-brand">
+        <span class="header-logo-text">Raunaq</span>
+        <span class="header-urdu">رونق</span>
+      </a>
+      <nav class="header-nav">
+        <a href="#how-it-works" class="header-link">How it works</a>
+        <a href="#purdah" class="header-link">Purdah Guarantee</a>
+        <a href="#features" class="header-link">Live Wall & Audio</a>
+        <a href="#packages" class="header-link">Packages</a>
+        <a href="#partners" class="header-link">Marquees & Partners</a>
+      </nav>
+      <a href="#book" class="btn btn-gold btn-sm wa-booking-btn">Book Your Date</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ========================================================================
+         HERO SECTION: 100svh Burgundy Stage with Mehrab Arch & Locked Nastaliq Tagline
+         ======================================================================== -->
+    <section class="hero-stage" id="hero">
+      <!-- Background Calligraphy Ghost -->
+      <div class="hero-ghost-calligraphy" aria-hidden="true">رونق</div>
+
+      <!-- Hairline concentric circle -->
+      <div class="hero-hairline-circle" aria-hidden="true"></div>
+
+      <!-- Giant Mehrab Arch Outline -->
+      <div class="hero-arch-container">
+        <svg class="hero-arch-svg" viewBox="0 0 720 720" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="goldArchGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#E7C982" />
+              <stop offset="50%" stop-color="#C6A15B" />
+              <stop offset="100%" stop-color="#99752D" />
+            </linearGradient>
+          </defs>
+          <!-- Mehrab Arch Curve -->
+          <path class="arch-outline-path" d="M 40 720 L 40 320 C 40 180, 260 60, 360 12 C 460 60, 680 180, 680 320 L 680 720" />
+        </svg>
+
+        <div class="hero-content">
+          <p class="hero-badge">Real-Time Wedding Memory Collective</p>
+          <h1 class="hero-title">Raunaq</h1>
+          <!-- LOCKED URDU TAGLINE -->
+          <p class="hero-urdu-stack">آپ کی شادی کی ساری تصویریں، ایک QR میں</p>
+          <p class="hero-lead">Every guest's candid photos, videos, and heartfelt voice wishes collected instantly. Zero app downloads. Pure original quality.</p>
+
+          <div class="hero-ctas">
+            <a href="#book" class="btn btn-gold wa-booking-btn">Reserve Wedding Date</a>
+            <a href="#how-it-works" class="btn btn-outline-gold">Explore Experience</a>
+          </div>
+        </div>
+      </div>
+
+      <a href="#how-it-works" class="hero-scroll-cue" aria-label="Scroll down">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+      </a>
+    </section>
+
+    <!-- ========================================================================
+         MARQUEE TICKER: Restored exact order
+         Mehndi ✦ Baraat ✦ Walima ✦ رونق ✦ Voice Guestbook ✦ Live Wall ✦ Purdah Mode ✦
+         ======================================================================== -->
+    <div class="ticker-wrap" aria-hidden="true">
+      <div class="ticker-track">
+        <span class="ticker-item">Mehndi <span class="ticker-star">✦</span></span>
+        <span class="ticker-item">Baraat <span class="ticker-star">✦</span></span>
+        <span class="ticker-item">Walima <span class="ticker-star">✦</span></span>
+        <span class="ticker-item"><span class="urdu-tag">رونق</span> <span class="ticker-star">✦</span></span>
+        <span class="ticker-item">Voice Guestbook <span class="ticker-star">✦</span></span>
+        <span class="ticker-item">Live Wall <span class="ticker-star">✦</span></span>
+        <span class="ticker-item">Purdah Mode <span class="ticker-star">✦</span></span>
+
+        <!-- Duplicated for seamless loop -->
+        <span class="ticker-item">Mehndi <span class="ticker-star">✦</span></span>
+        <span class="ticker-item">Baraat <span class="ticker-star">✦</span></span>
+        <span class="ticker-item">Walima <span class="ticker-star">✦</span></span>
+        <span class="ticker-item"><span class="urdu-tag">رونق</span> <span class="ticker-star">✦</span></span>
+        <span class="ticker-item">Voice Guestbook <span class="ticker-star">✦</span></span>
+        <span class="ticker-item">Live Wall <span class="ticker-star">✦</span></span>
+        <span class="ticker-item">Purdah Mode <span class="ticker-star">✦</span></span>
+      </div>
+    </div>
+
+    <!-- ========================================================================
+         SECTION 1: HOW IT WORKS (Cream Editorial Stage)
+         ======================================================================== -->
+    <section class="section-editorial bg-cream" id="how-it-works">
+      <div class="container">
+        <div class="reveal-item">
+          <div class="section-label-row">
+            <span class="section-kicker">01 — How It Works</span>
+            <div class="section-hairline"></div>
+          </div>
+          <h2 class="section-title">Effortless capture for <span class="urdu-accent">مہمان</span> and host</h2>
+          <p class="section-sublead">No logins, no App Store downloads, no WhatsApp group quality compression. Three seamless moments from venue table to permanent family archive.</p>
+        </div>
+
+        <div class="journey-grid">
+          <div class="journey-step reveal-item">
+            <span class="journey-numeral">01</span>
+            <h3 class="journey-step-title">Scan Table QR Card</h3>
+            <p class="journey-step-desc">Guests point any phone camera at elegant table cards. The private event portal opens instantly in Chrome or Safari without account creation or installs.</p>
+          </div>
+
+          <div class="journey-step reveal-item">
+            <span class="journey-numeral">02</span>
+            <h3 class="journey-step-title">Upload Photos, Videos & Wishes</h3>
+            <p class="journey-step-desc">Pick photos, 4K videos, or iPhone HEICs right from the camera roll, or record a warm 30-second audio voice note wish. Uploads flow directly to secure cloud storage.</p>
+          </div>
+
+          <div class="journey-step reveal-item">
+            <span class="journey-numeral">03</span>
+            <h3 class="journey-step-title">Live Wall & Master ZIP Archive</h3>
+            <p class="journey-step-desc">Approved memories project live on venue banquet screens during the reception. The host downloads every raw, uncompressed original file in one clean ZIP archive.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SECTION 2: PURDAH GUARANTEE (Dark Burgundy Stage)
+         ======================================================================== -->
+    <section class="section-editorial bg-burgundy-stage" id="purdah">
+      <div class="container">
+        <div class="reveal-item">
+          <div class="section-label-row">
+            <span class="section-kicker on-dark">02 — Sacred Trust</span>
+            <div class="section-hairline"></div>
+          </div>
+          <h2 class="section-title on-dark">The <span class="urdu-accent">پردہ</span> Mode Guarantee</h2>
+          <p class="section-sublead on-dark">Traditional values meet modern technology. We designed Raunaq so families never have to compromise modesty or peace of mind to enjoy modern digital celebrations.</p>
+        </div>
+
+        <div class="purdah-box-grid">
+          <div class="purdah-card reveal-item">
+            <div class="purdah-card-num">01 / Four Guarantees</div>
+            <h3 class="purdah-card-title">Approval-Before-Display Moderation</h3>
+            <p class="purdah-card-text">Every single guest upload lands in a private host moderation queue first. Nothing is visible in public galleries or projected on venue screens until approved by the family.</p>
+          </div>
+
+          <div class="purdah-card reveal-item">
+            <div class="purdah-card-num">02 / Four Guarantees</div>
+            <h3 class="purdah-card-title">Private Ladies Functions</h3>
+            <p class="purdah-card-text">Designate exclusive ladies-only functions with one tap. Media tagged to private functions is strictly restricted to the host app and physically excluded from the Live Wall.</p>
+          </div>
+
+          <div class="purdah-card reveal-item">
+            <div class="purdah-card-num">03 / Four Guarantees</div>
+            <h3 class="purdah-card-title">One-Tap Re-filing & Rescue</h3>
+            <p class="purdah-card-text">Accidentally misfiled photos can be moved immediately from public functions to private ladies functions right from the host gallery with zero page reloads.</p>
+          </div>
+
+          <div class="purdah-card reveal-item">
+            <div class="purdah-card-num">04 / Four Guarantees</div>
+            <h3 class="purdah-card-title">No Guest-Side Browsing</h3>
+            <p class="purdah-card-text">Guests only see an upload terminal and personal delivery receipts. Guests can never browse, view, download, or screenshot anyone else’s family photos from their browser.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SECTION 3: FEATURES HIGHLIGHT (Live Wall & Voice Guestbook)
+         ======================================================================== -->
+    <section class="section-editorial bg-cream" id="features">
+      <div class="container">
+        <div class="reveal-item">
+          <div class="section-label-row">
+            <span class="section-kicker">03 — Venue Experience</span>
+            <div class="section-hairline"></div>
+          </div>
+          <h2 class="section-title">Bringing <span class="urdu-accent">رونق</span> to your banquet hall</h2>
+          <p class="section-sublead">Features crafted specifically for Pakistani wedding traditions, keeping guests engaged and emotional memories alive forever.</p>
+        </div>
+
+        <div class="features-split">
+          <div class="feature-editorial-card reveal-item">
+            <div class="feature-tag">Audio Guestbook</div>
+            <h3 class="feature-title">Heartfelt Voice Wishes & Duas</h3>
+            <p class="feature-desc">Elderly family members, cousins, and distant friends record 30-second voice blessings directly through their mobile browser. Crisp audio waveforms and sincere laughter preserved forever in the host archive alongside photographs.</p>
+          </div>
+
+          <div class="feature-editorial-card reveal-item">
+            <div class="feature-tag">Live Projection</div>
+            <h3 class="feature-title">Live Wall Reception Slideshow</h3>
+            <p class="feature-desc">Plug any laptop or TV to venue screens via HDMI. Watch newly captured candid moments cycle automatically in real-time as guests upload them, paired with an on-screen QR code prompting more guests to join.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SECTION 4: PACKAGES (Verbatim Truth Block)
+         ======================================================================== -->
+    <section class="section-editorial bg-cream" id="packages">
+      <div class="container">
+        <div class="reveal-item" style="text-align: center;">
+          <div class="section-label-row" style="justify-content: center;">
+            <span class="section-kicker">04 — Transparent Pricing</span>
+          </div>
+          <h2 class="section-title">Simple, honest wedding <span class="urdu-accent">پیکیجز</span></h2>
+          <p class="section-sublead" style="margin-left: auto; margin-right: auto;">One-time investment. Zero hidden subscriptions. Complete access for all functions with verified 6-month retention.</p>
+        </div>
+
+        <div class="packages-grid">
+          <!-- Single Function -->
+          <div class="package-card reveal-item">
+            <h3 class="package-tier-name">Single Function</h3>
+            <p class="package-functions-tag">1 Function (e.g. Mehndi or Baraat)</p>
+            <div class="package-price-wrap">
+              <div class="package-price">Rs 1,999</div>
+              <p class="package-price-term">One-time payment • All inclusive</p>
+            </div>
+            <ul class="package-specs">
+              <li class="package-spec-item">3 GB high-speed cloud storage</li>
+              <li class="package-spec-item">6 months guaranteed retention</li>
+              <li class="package-spec-item">Unlimited guest uploads</li>
+              <li class="package-spec-item">Printable Table QR Cards PDF</li>
+              <li class="package-spec-item">Purdah & approval controls</li>
+              <li class="package-spec-item">Full master ZIP archive download</li>
+            </ul>
+            <a href="#book" class="btn btn-burgundy wa-booking-btn" data-package="Single Function">Choose Single</a>
+          </div>
+
+          <!-- Full Wedding (Featured Most Loved) -->
+          <div class="package-card featured reveal-item">
+            <div class="package-loved-pill">Most Loved</div>
+            <h3 class="package-tier-name">Full Wedding</h3>
+            <p class="package-functions-tag">Up to 3 Functions (Mehndi, Baraat, Walima)</p>
+            <div class="package-price-wrap">
+              <div class="package-price">Rs 3,499</div>
+              <p class="package-price-term">One-time payment • Complete celebration</p>
+            </div>
+            <ul class="package-specs">
+              <li class="package-spec-item">5 GB high-speed cloud storage</li>
+              <li class="package-spec-item">6 months guaranteed retention</li>
+              <li class="package-spec-item">Live Reception Wall for projector/TV</li>
+              <li class="package-spec-item">Voice Guestbook audio wishes</li>
+              <li class="package-spec-item">Automatic HEIC to JPEG conversion</li>
+              <li class="package-spec-item">Purdah safe mode + private ladies function</li>
+              <li class="package-spec-item">Full master ZIP archive download</li>
+            </ul>
+            <a href="#book" class="btn btn-gold wa-booking-btn" data-package="Full Wedding">Choose Full Wedding</a>
+          </div>
+
+          <!-- Premium Tier -->
+          <div class="package-card reveal-item">
+            <h3 class="package-tier-name">Premium</h3>
+            <p class="package-functions-tag">Up to 10 Extended Celebrations</p>
+            <div class="package-price-wrap">
+              <div class="package-price">Rs 4,999</div>
+              <p class="package-price-term">One-time payment • Mega events</p>
+            </div>
+            <ul class="package-specs">
+              <li class="package-spec-item">10 GB ultra-capacity cloud storage</li>
+              <li class="package-spec-item">6 months guaranteed retention</li>
+              <li class="package-spec-item">Up to 10 functions (Mayun, Dholki, Nikah, etc.)</li>
+              <li class="package-spec-item">Priority cloud processing</li>
+              <li class="package-spec-item">Live Wall + Voice guestbook included</li>
+              <li class="package-spec-item">Dedicated WhatsApp host support</li>
+            </ul>
+            <a href="#book" class="btn btn-burgundy wa-booking-btn" data-package="Premium">Choose Premium</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SECTION 5: FOR MARQUEES & PARTNERS (Exact Public Promise)
+         ======================================================================== -->
+    <section class="section-editorial bg-cream" id="partners">
+      <div class="container">
+        <div class="reveal-item">
+          <div class="section-label-row">
+            <span class="section-kicker">05 — Partnerships</span>
+            <div class="section-hairline"></div>
+          </div>
+          <h2 class="section-title">For marquees & partners</h2>
+          <p class="section-sublead">Earn 20% on every booking you bring — Rs 400 / Rs 700 / Rs 1,000 per package — paid on verified payments, with a written statement for every payout and your own partner code; the host's price never changes.</p>
+        </div>
+
+        <div class="partner-banner reveal-item">
+          <h3 style="font-family: var(--font-serif); font-size: 1.5rem; color: var(--ink-charcoal); margin-bottom: 8px;">20% Commission On Every Booking</h3>
+          <p style="color: var(--ink-muted); font-size: 0.98rem; max-width: 650px;">Partner with Raunaq to offer seamless digital wedding collective albums to your wedding families. Payouts are made directly on verified payments with clear accounting.</p>
+
+          <div class="partner-commissions-row">
+            <div class="commission-box">
+              <div class="commission-label">Single Function (Rs 1,999)</div>
+              <div class="commission-number">Rs 400</div>
+              <div class="commission-sub">Partner Payout</div>
+            </div>
+
+            <div class="commission-box">
+              <div class="commission-label">Full Wedding (Rs 3,499)</div>
+              <div class="commission-number">Rs 700</div>
+              <div class="commission-sub">Partner Payout</div>
+            </div>
+
+            <div class="commission-box">
+              <div class="commission-label">Premium Package (Rs 4,999)</div>
+              <div class="commission-number">Rs 1,000</div>
+              <div class="commission-sub">Partner Payout</div>
+            </div>
+          </div>
+
+          <div style="text-align: center;">
+            <a href="#book" class="btn btn-burgundy wa-partner-btn">Become a Partner</a>
+          </div>
+        </div>
+
+        <!-- ====================================================================
+             #book SECTION: Target when WhatsApp Number is Empty
+             Exact required wording:
+             "To book your date, message us on WhatsApp — number coming here very soon. If someone shared this page with you, ask them for our number."
+             ==================================================================== -->
+        <div class="book-fallback-section reveal-item" id="book">
+          <p class="book-fallback-text">To book your date, message us on WhatsApp — number coming here very soon. If someone shared this page with you, ask them for our number.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       SECTION 6: FOOTER (Deep Burgundy Stage)
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div>
+          <div class="footer-brand-title">Raunaq</div>
+          <!-- LOCKED URDU TAGLINE -->
+          <div class="footer-tagline-urdu">آپ کی شادی کی ساری تصویریں، ایک QR میں</div>
+          <p class="footer-desc">Pakistan’s dedicated wedding memory collective. Preserving every guest’s laughter, heartfelt blessings, and candid celebrations in uncompressed original fidelity.</p>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Navigation</div>
+          <ul class="footer-links">
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#purdah">Purdah Guarantee</a></li>
+            <li><a href="#features">Live Wall & Audio</a></li>
+            <li><a href="#packages">Pricing Packages</a></li>
+            <li><a href="#partners">For Marquees & Partners</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Contact & Booking</div>
+          <ul class="footer-links">
+            <li><a href="#book" class="wa-booking-btn">WhatsApp Concierge</a></li>
+            <li><a href="#purdah">Modesty & Privacy Terms</a></li>
+            <li><a href="#partners">Partner Payouts</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Raunaq (رونق). All rights reserved. Crafted with care in Pakistan.</div>
+        <div style="color: var(--gold-light);">Zero guest logins • Raw quality • Modesty first</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       CLIENT SCRIPT: INTERSECTION OBSERVER & TWO-STATE WHATSAPP HANDLER
+       ========================================================================== -->
+  <script>
+    /* WhatsApp Number Configuration:
+       EMPTY state (""): buttons link to #book whose text informs user number is coming soon.
+       FILLED state ("92300..."): buttons link to https://wa.me/<number>?text=<prefilled message>.
+    */
+    const RAUNAQ_WHATSAPP_NUMBER = "";
+
+    (function() {
+      // 1. Mark JS active
+      document.documentElement.classList.add('js-active');
+
+      // 2. Wire WhatsApp Two-State Logic
+      var isFilled = typeof RAUNAQ_WHATSAPP_NUMBER === 'string' && RAUNAQ_WHATSAPP_NUMBER.trim().length > 0;
+      var cleanNumber = isFilled ? RAUNAQ_WHATSAPP_NUMBER.trim().replace(/[^0-9]/g, '') : '';
+
+      if (isFilled && cleanNumber.length > 0) {
+        // FILLED STATE: rewire booking and partner buttons to direct wa.me/<number>?text=...
+        document.querySelectorAll('.wa-booking-btn').forEach(function(el) {
+          var pkg = el.getAttribute('data-package') || 'Full Wedding';
+          var msg = "Assalam-o-Alaikum! I want to book Raunaq for our wedding celebration (" + pkg + " package). Please share availability.";
+          el.href = "https://wa.me/" + cleanNumber + "?text=" + encodeURIComponent(msg);
+          el.target = "_blank";
+          el.rel = "noopener";
+        });
+
+        document.querySelectorAll('.wa-partner-btn').forEach(function(el) {
+          var msg = "Assalam-o-Alaikum! I would like to partner with Raunaq for wedding bookings.";
+          el.href = "https://wa.me/" + cleanNumber + "?text=" + encodeURIComponent(msg);
+          el.target = "_blank";
+          el.rel = "noopener";
+        });
+      } else {
+        // EMPTY STATE: buttons strictly retain #book link targeting the fallback callout
+        document.querySelectorAll('.wa-booking-btn, .wa-partner-btn').forEach(function(el) {
+          el.href = "#book";
+          el.removeAttribute('target');
+          el.removeAttribute('rel');
+        });
+      }
+
+      // 3. Scroll reveals (<= 12 lines)
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('is-revealed'); } });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal-item').forEach(function(el) { observer.observe(el); });
+
+        var header = document.getElementById('stickyHeader');
+        var hero = document.getElementById('hero');
+        if (header && hero) {
+          var headerObserver = new IntersectionObserver(function(entries) {
+            header.classList.toggle('visible', !entries[0].isIntersecting);
+          }, { threshold: 0.1 });
+          headerObserver.observe(hero);
+        }
+      } else {
+        document.querySelectorAll('.reveal-item').forEach(function(el) { el.classList.add('is-revealed'); });
+      }
+    })();
+  </script>
+</body>
+</html>
