@@ -470,6 +470,29 @@
       animation: riseFade 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
     }
 
+    .hero-apk-notes {
+      margin-top: 14px;
+      text-align: center;
+      opacity: 0;
+      animation: riseFade 1.1s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+    }
+
+    .hero-apk-notes .apk-note-en {
+      font-size: 0.82rem;
+      color: var(--gold-light);
+      letter-spacing: 0.02em;
+      margin-bottom: 4px;
+      opacity: 0.95;
+    }
+
+    .hero-apk-notes .apk-note-ur {
+      font-family: var(--font-urdu);
+      font-size: 0.95rem;
+      color: var(--cream-light);
+      direction: rtl;
+      opacity: 0.9;
+    }
+
     .hero-ctas {
       display: flex;
       flex-direction: column;
@@ -1294,7 +1317,11 @@
 
           <div class="hero-ctas">
             <a href="#book" class="btn btn-gold wa-booking-btn">Reserve Wedding Date</a>
-            <a href="#how-it-works" class="btn btn-outline-gold">Explore Experience</a>
+            <a href="app/Raunaq.apk" download class="btn btn-outline-gold hero-apk-btn">Download the Host App</a>
+          </div>
+          <div class="hero-apk-notes">
+            <p class="apk-note-en">For hosts only — guests never need an app, they just scan the QR. Android • 1.0.0+1 • 61.1 MB</p>
+            <p class="apk-note-ur">میزبان ایپ — انسٹال کرتے وقت فون اجازت مانگے تو Allow کر دیں</p>
           </div>
         </div>
       </div>
@@ -1584,6 +1611,7 @@
         <div>
           <div class="footer-col-title">Navigation</div>
           <ul class="footer-links">
+            <li><a href="app/Raunaq.apk" download>Download Host App (APK)</a></li>
             <li><a href="#how-it-works">How It Works</a></li>
             <li><a href="#purdah">Purdah Guarantee</a></li>
             <li><a href="#features">Live Wall & Audio</a></li>
