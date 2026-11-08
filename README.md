@@ -1,6 +1,8 @@
 # Raunaq Landing Website (`raunaq-site`)
 
 Official public showcase website for **Raunaq (رونق)** — Pakistan's real-time wedding memory collective.
+- **Primary Canonical Origin**: `https://raunaq-site.pages.dev/`
+- **Fallback Origin**: `https://ahmad786-coder.github.io/raunaq-site/`
 
 ---
 
