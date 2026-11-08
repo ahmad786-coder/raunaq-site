@@ -6,6 +6,25 @@
   <title>Raunaq (رونق) — Real-Time Wedding Memory Collective</title>
   <meta name="description" content="Every guest's photo, video, and audio wish collected in real time. Full-resolution originals, Live Wall for the reception, and zero guest app downloads.">
 
+  <!-- Favicons (Flat Master) -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="theme-color" content="#881337">
+
+  <!-- Social Sharing (OpenGraph & Twitter Image) -->
+  <meta property="og:title" content="Raunaq (رونق) — Real-Time Wedding Memory Collective">
+  <meta property="og:description" content="Every guest's photo, video, and audio wish collected in real time. Full-resolution originals, Live Wall for the reception, and zero guest app downloads.">
+  <meta property="og:image" content="https://raunaq-site.pages.dev/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Raunaq (رونق) — Real-Time Wedding Memory Collective">
+  <meta name="twitter:description" content="Every guest's photo, video, and audio wish collected in real time. Full-resolution originals, Live Wall for the reception, and zero guest app downloads.">
+  <meta name="twitter:image" content="https://raunaq-site.pages.dev/og-image.png">
+
   <!-- Google Fonts: Playfair Display, Inter, Noto Nastaliq Urdu -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -386,8 +405,34 @@
       animation: riseFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
     }
 
+    .hero-emblem-wrap {
+      margin: 0 auto 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      animation: riseFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+    }
+
+    .hero-emblem-img {
+      width: 96px;
+      height: 96px;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.5));
+      transition: transform 0.4s ease;
+    }
+
+    @media (min-width: 768px) {
+      .hero-emblem-wrap {
+        margin-bottom: 20px;
+      }
+      .hero-emblem-img {
+        width: 140px;
+        height: 140px;
+      }
+    }
+
     .hero-title {
-      font-family: var(--font-serif);
       font-size: clamp(2.8rem, 6.5vw, 5.2rem);
       font-weight: 700;
       line-height: 1.05;
@@ -1239,6 +1284,9 @@
 
         <div class="hero-content">
           <p class="hero-badge">Real-Time Wedding Memory Collective</p>
+          <div class="hero-emblem-wrap">
+            <img src="assets/raunaq-emblem-3d.png" alt="Raunaq 3D Emblem" class="hero-emblem-img" width="140" height="140">
+          </div>
           <h1 class="hero-title">Raunaq</h1>
           <!-- LOCKED URDU TAGLINE -->
           <p class="hero-urdu-stack">آپ کی شادی کی ساری تصویریں، ایک QR میں</p>
