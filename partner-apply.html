@@ -243,23 +243,90 @@
       font-family: var(--font-sans);
       font-size: 1.05rem;
       font-weight: 600;
-      cursor: not-allowed;
-      opacity: 0.65;
-      transition: background 0.2s;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      background: var(--burgundy-rich);
     }
 
     .submit-btn:disabled {
       cursor: not-allowed;
       background: #9CA3AF;
       color: #F3F4F6;
+      opacity: 0.7;
     }
 
-    .staged-note {
+    .form-status {
+      display: none;
+      padding: 14px 18px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .form-status.status-error {
+      display: block;
+      background-color: #FEF2F2;
+      border: 1px solid #FCA5A5;
+      color: #991B1B;
+    }
+
+    .form-status.status-duplicate {
+      display: block;
+      background-color: #FFFBEB;
+      border: 1px solid #FCD34D;
+      color: #92400E;
+    }
+
+    .success-container {
       text-align: center;
-      font-size: 0.88rem;
-      color: var(--ink-muted);
-      margin-top: 10px;
-      font-style: italic;
+      padding: 30px 10px;
+    }
+
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #ECFDF5;
+      color: #059669;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    .success-title {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      color: var(--burgundy-dark);
+      margin-bottom: 14px;
+    }
+
+    .success-desc {
+      font-size: 1.05rem;
+      color: var(--ink-charcoal);
+      line-height: 1.6;
+      max-width: 520px;
+      margin: 0 auto 28px;
+    }
+
+    .return-btn {
+      display: inline-block;
+      padding: 12px 28px;
+      background: var(--burgundy-base);
+      color: var(--cream-base);
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .return-btn:hover {
+      background: var(--burgundy-rich);
     }
 
     footer {
@@ -292,6 +359,8 @@
       <h2>Commercial Partnership Application</h2>
       <p>Please provide your business and contact information below. Every verified partner earns 20% on all attributed bookings with direct transparent statements.</p>
     </div>
+
+    <div id="formStatusBanner" class="form-status"></div>
 
     <form id="partnerForm" novalidate>
       <!-- Applicant Name -->
@@ -371,9 +440,8 @@
         </p>
       </div>
 
-      <!-- Submit Button (Disabled in Part 2a) -->
-      <button type="button" class="submit-btn" id="submitBtn" disabled>Submit Partner Application</button>
-      <p class="staged-note">Online applications open soon.</p>
+      <!-- Submit Button -->
+      <button type="submit" class="submit-btn" id="submitBtn">Submit Partner Application</button>
     </form>
   </main>
 
@@ -382,18 +450,44 @@
   </footer>
 
   <script>
-    // Client-side Validation (Plain JS)
+    // Partner Application Form Wiring & Client Validation
     (function() {
+      const form = document.getElementById('partnerForm');
+      const container = document.querySelector('.form-container');
+      const submitBtn = document.getElementById('submitBtn');
+      const statusBanner = document.getElementById('formStatusBanner');
+
       const applicantNameInput = document.getElementById('applicantName');
+      const businessNameInput = document.getElementById('businessName');
       const businessTypeSelect = document.getElementById('businessType');
       const cityInput = document.getElementById('city');
       const whatsappInput = document.getElementById('whatsapp');
       const emailInput = document.getElementById('email');
       const monthlyWeddingsInput = document.getElementById('monthlyWeddings');
+      const messageInput = document.getElementById('message');
+
+      // Public Supabase Config (REST endpoint + anon publishable key)
+      const SUPABASE_REST_URL = 'https://qsglzqpecupjemibjoem.supabase.co/rest/v1/partner_applications';
+      const SUPABASE_ANON_KEY = 'sb_publishable_cMipMHhGfRefRiNwF4ToUw_OO_bOykP';
+      const THROTTLE_STORAGE_KEY = 'raunaq_partner_apply_ts';
+      const THROTTLE_SECONDS = 60;
 
       // Validation Regex Patterns
       const whatsappPattern = /^(\+92[0-9]{10}|03[0-9]{9})$/;
       const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+      function showBanner(type, message) {
+        statusBanner.className = 'form-status ' + (type === 'duplicate' ? 'status-duplicate' : 'status-error');
+        statusBanner.textContent = message;
+        statusBanner.style.display = 'block';
+        statusBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      function clearBanner() {
+        statusBanner.className = 'form-status';
+        statusBanner.textContent = '';
+        statusBanner.style.display = 'none';
+      }
 
       function validateField(input, errorElement, condition) {
         if (!condition) {
@@ -456,6 +550,14 @@
         return isNameValid && isTypeValid && isCityValid && isPhoneValid && isEmailValid && isWeddingsValid;
       }
 
+      function cleanWhatsappForStorage(raw) {
+        var digits = raw.replace(/[^0-9+]/g, '');
+        if (digits.startsWith('03') && digits.length === 11) {
+          return '+92' + digits.substring(1);
+        }
+        return digits;
+      }
+
       // Realtime validation listeners on blur and input
       applicantNameInput.addEventListener('blur', checkValidation);
       businessTypeSelect.addEventListener('change', checkValidation);
@@ -463,6 +565,123 @@
       whatsappInput.addEventListener('blur', checkValidation);
       emailInput.addEventListener('blur', checkValidation);
       monthlyWeddingsInput.addEventListener('blur', checkValidation);
+
+      // Submit listener
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        clearBanner();
+
+        // 1. Client-side throttle: 1 submit per 60 seconds per browser
+        try {
+          var lastSubmitTs = localStorage.getItem(THROTTLE_STORAGE_KEY);
+          if (lastSubmitTs) {
+            var diffMs = Date.now() - parseInt(lastSubmitTs, 10);
+            if (diffMs < THROTTLE_SECONDS * 1000) {
+              showBanner('error', 'Please wait a minute before trying again.');
+              return;
+            }
+          }
+        } catch (e) {
+          // localStorage disabled/restricted, proceed safely
+        }
+
+        // 2. Client validation
+        var isValid = checkValidation();
+        if (!isValid) {
+          var firstError = form.querySelector('.input-error');
+          if (firstError) {
+            firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            firstError.focus();
+          }
+          return;
+        }
+
+        // 3. Double-submit guard & disable button
+        submitBtn.disabled = true;
+        var originalBtnText = submitBtn.textContent;
+        submitBtn.textContent = 'Submitting...';
+
+        // 4. Construct payload
+        var weddingsNum = monthlyWeddingsInput.value.trim();
+        var weddingsVal = weddingsNum.length > 0 ? parseInt(weddingsNum, 10) : null;
+        var bName = businessNameInput.value.trim();
+        var msgVal = messageInput.value.trim();
+
+        var payload = {
+          applicant_name: applicantNameInput.value.trim(),
+          business_name: bName.length > 0 ? bName : null,
+          business_type: businessTypeSelect.value,
+          city: cityInput.value.trim(),
+          whatsapp: cleanWhatsappForStorage(whatsappInput.value.trim()),
+          email: emailInput.value.trim().toLowerCase(),
+          monthly_weddings: weddingsVal,
+          message: msgVal.length > 0 ? msgVal : null
+        };
+
+        try {
+          var response = await fetch(SUPABASE_REST_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify(payload)
+          });
+
+          if (response.ok) {
+            // Record successful submission timestamp for client throttle
+            try {
+              localStorage.setItem(THROTTLE_STORAGE_KEY, Date.now().toString());
+            } catch (e) {}
+
+            // Success state: replace form with success message card
+            container.innerHTML = `
+              <div class="success-container">
+                <div class="success-icon">✓</div>
+                <h2 class="success-title">Application Submitted!</h2>
+                <p class="success-desc">Our team will review your application and send your personal partner code directly to your WhatsApp.</p>
+                <a href="/" class="return-btn">Return to Raunaq Homepage</a>
+              </div>
+            `;
+            container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+          }
+
+          // Non-OK response handling
+          var errorData = null;
+          try {
+            errorData = await response.json();
+          } catch (e) {}
+
+          var isDuplicatePending = false;
+          if (response.status === 409) {
+            isDuplicatePending = true;
+          } else if (errorData && (
+            errorData.code === '23505' ||
+            (typeof errorData.message === 'string' && errorData.message.includes('partner_applications_pending_whatsapp_idx')) ||
+            (typeof errorData.details === 'string' && errorData.details.includes('partner_applications_pending_whatsapp_idx'))
+          )) {
+            isDuplicatePending = true;
+          }
+
+          if (isDuplicatePending) {
+            showBanner('duplicate', 'You already have a pending application for this WhatsApp number — please wait for our reply.');
+          } else {
+            showBanner('error', 'Something went wrong — your details are still here, please try again.');
+          }
+
+          // Re-enable button on error, retaining entered fields
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalBtnText;
+
+        } catch (netErr) {
+          showBanner('error', 'Something went wrong — your details are still here, please try again.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalBtnText;
+        }
+      });
     })();
   </script>
 </body>
