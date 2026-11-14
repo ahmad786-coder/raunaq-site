@@ -11,9 +11,9 @@ Official public showcase website for **Raunaq (رونق)** — Pakistan's real-t
 A self-contained, high-performance landing page presenting:
 - The zero-login table QR guest experience.
 - The signature **Purdah Mode** modesty guarantees (approval-before-display, private ladies functions, no guest browsing).
-- Transparent wedding package tiers (Single Function: Rs 1,999; Full Wedding: Rs 3,499; Premium: Rs 4,999).
+- Transparent wedding package tiers (Single Function: Rs 999; Full Wedding: Rs 1,999; Premium: Rs 2,999).
 - Venue Live Wall & Voice Guestbook highlights.
-- **For marquees & partners**: 20% commission on every booking brought (Rs 400 / Rs 700 / Rs 1,000 per package).
+- **For marquees & partners**: 20% commission on every booking brought (Rs 200 / Rs 400 / Rs 600 per package).
 
 ---
 
