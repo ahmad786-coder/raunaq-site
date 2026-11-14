@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Become a Raunaq Partner — Raunaq (رونق)</title>
+  <meta name="description" content="Apply to join the Raunaq Partner Network. Earn 20% on every wedding booking you bring — designed for marquees, photographers, and decorators across Pakistan.">
+
+  <!-- Favicons -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="theme-color" content="#4A081A">
+
+  <!-- Social Sharing -->
+  <meta property="og:title" content="Become a Raunaq Partner — Raunaq (رونق)">
+  <meta property="og:description" content="Partner with Raunaq to offer real-time digital collective albums to your wedding families. Earn 20% transparent commission on every booking.">
+  <meta property="og:image" content="https://raunaq-site.pages.dev/og-image.png">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts: Playfair Display, Inter, Noto Nastaliq Urdu -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --burgundy-deep: #4A081A;
+      --burgundy-base: #6B0F2B;
+      --burgundy-rich: #881337;
+      --burgundy-light: #9F1239;
+      --cream-light: #FFFDF9;
+      --cream-base: #FFFBF3;
+      --cream-dark: #F7F1E5;
+      --cream-border: #EADBCE;
+      --gold-deep: #99752D;
+      --gold-base: #C6A15B;
+      --gold-light: #E7C982;
+      --ink-charcoal: #23161C;
+      --ink-muted: #5C4B52;
+      --white-pure: #FFFFFF;
+      --error-red: #B91C1C;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-urdu: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Urdu Typesetting', serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--ink-charcoal);
+      background-color: var(--cream-base);
+      line-height: 1.6;
+      padding: 0 16px 64px;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--burgundy-deep), var(--burgundy-rich));
+      color: var(--cream-base);
+      padding: 40px 20px;
+      text-align: center;
+      margin: 0 -16px 36px;
+      border-bottom: 3px solid var(--gold-base);
+      box-shadow: 0 4px 20px rgba(74, 8, 26, 0.15);
+    }
+
+    .brand-link {
+      color: var(--gold-light);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      display: inline-block;
+      margin-bottom: 12px;
+      transition: color 0.2s;
+    }
+
+    .brand-link:hover {
+      color: var(--white-pure);
+    }
+
+    header h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      font-weight: 700;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    header p {
+      color: rgba(255, 251, 243, 0.9);
+      font-size: 1rem;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .form-container {
+      max-width: 720px;
+      margin: 0 auto;
+      background: var(--white-pure);
+      padding: 40px 32px;
+      border-radius: 16px;
+      border: 1px solid var(--cream-border);
+      box-shadow: 0 6px 30px rgba(35, 22, 28, 0.05);
+    }
+
+    @media (max-width: 600px) {
+      .form-container {
+        padding: 28px 20px;
+      }
+    }
+
+    .form-intro {
+      margin-bottom: 28px;
+      border-bottom: 1px solid var(--cream-border);
+      padding-bottom: 20px;
+    }
+
+    .form-intro h2 {
+      font-family: var(--font-serif);
+      color: var(--burgundy-base);
+      font-size: 1.5rem;
+      margin-bottom: 6px;
+    }
+
+    .form-intro p {
+      color: var(--ink-muted);
+      font-size: 0.95rem;
+    }
+
+    .form-group {
+      margin-bottom: 22px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--ink-charcoal);
+      margin-bottom: 6px;
+    }
+
+    .req {
+      color: var(--burgundy-rich);
+    }
+
+    .field-hint {
+      font-size: 0.82rem;
+      color: var(--ink-muted);
+      margin-top: 4px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--cream-border);
+      border-radius: 8px;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      color: var(--ink-charcoal);
+      background-color: var(--cream-light);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--gold-base);
+      box-shadow: 0 0 0 3px rgba(198, 161, 91, 0.2);
+      background-color: var(--white-pure);
+    }
+
+    .input-error {
+      border-color: var(--error-red) !important;
+      background-color: #FEF2F2 !important;
+    }
+
+    .error-msg {
+      font-size: 0.82rem;
+      color: var(--error-red);
+      margin-top: 5px;
+      display: none;
+    }
+
+    .caution-box {
+      background-color: #FFF7ED;
+      border: 1px solid #FDBA74;
+      border-left: 4px solid #EA580C;
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin: 32px 0 24px;
+    }
+
+    .caution-header {
+      font-weight: 700;
+      color: #9A3412;
+      font-size: 0.92rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .caution-text-en {
+      font-size: 0.92rem;
+      color: #7C2D12;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+
+    .caution-text-ur {
+      font-family: var(--font-urdu);
+      font-size: 0.98rem;
+      color: #7C2D12;
+      line-height: 1.9;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px 24px;
+      background: var(--burgundy-base);
+      color: var(--cream-base);
+      border: none;
+      border-radius: 8px;
+      font-family: var(--font-sans);
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: not-allowed;
+      opacity: 0.65;
+      transition: background 0.2s;
+    }
+
+    .submit-btn:disabled {
+      cursor: not-allowed;
+      background: #9CA3AF;
+      color: #F3F4F6;
+    }
+
+    .staged-note {
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--ink-muted);
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 48px;
+      color: var(--ink-muted);
+      font-size: 0.88rem;
+    }
+
+    footer a {
+      color: var(--burgundy-rich);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="/" class="brand-link">← Return to Raunaq Homepage</a>
+    <h1>Become a Raunaq Partner</h1>
+    <p>Partner with Pakistan's wedding memory collective. Our team reviews your application and sends your personal partner code directly to your WhatsApp.</p>
+  </header>
+
+  <main class="form-container">
+    <div class="form-intro">
+      <h2>Commercial Partnership Application</h2>
+      <p>Please provide your business and contact information below. Every verified partner earns 20% on all attributed bookings with direct transparent statements.</p>
+    </div>
+
+    <form id="partnerForm" novalidate>
+      <!-- Applicant Name -->
+      <div class="form-group">
+        <label for="applicantName">Applicant Name <span class="req">*</span></label>
+        <input type="text" id="applicantName" name="applicant_name" placeholder="e.g. Tariq Mahmood" required>
+        <div class="error-msg" id="applicantNameError">Please enter your full name.</div>
+      </div>
+
+      <!-- Business Name -->
+      <div class="form-group">
+        <label for="businessName">Business / Brand Name</label>
+        <input type="text" id="businessName" name="business_name" placeholder="e.g. Royal Palace Marquee (optional if individual)">
+        <div class="field-hint">Leave blank if applying as an independent professional.</div>
+      </div>
+
+      <!-- Business Type -->
+      <div class="form-group">
+        <label for="businessType">Business Type <span class="req">*</span></label>
+        <select id="businessType" name="business_type" required>
+          <option value="">Select your business category...</option>
+          <option value="marquee">Marquee</option>
+          <option value="photographer">Photographer</option>
+          <option value="decorator">Decorator</option>
+          <option value="other">Other</option>
+        </select>
+        <div class="error-msg" id="businessTypeError">Please select a business type.</div>
+      </div>
+
+      <!-- City -->
+      <div class="form-group">
+        <label for="city">City <span class="req">*</span></label>
+        <input type="text" id="city" name="city" placeholder="e.g. Lahore, Karachi, Islamabad" required>
+        <div class="error-msg" id="cityError">Please enter your operational city.</div>
+      </div>
+
+      <!-- WhatsApp Number -->
+      <div class="form-group">
+        <label for="whatsapp">WhatsApp Number <span class="req">*</span></label>
+        <input type="tel" id="whatsapp" name="whatsapp" placeholder="e.g. 03001234567 or +923001234567" required>
+        <div class="field-hint">Pakistani format: 03XXXXXXXXX (11 digits) or +92XXXXXXXXXX (13 chars).</div>
+        <div class="error-msg" id="whatsappError">Please enter a valid Pakistani WhatsApp number (+92XXXXXXXXXX or 03XXXXXXXXX).</div>
+      </div>
+
+      <!-- Account Email -->
+      <div class="form-group">
+        <label for="email">Raunaq Account Email <span class="req">*</span></label>
+        <input type="email" id="email" name="email" placeholder="e.g. tariq@example.com" required>
+        <div class="field-hint">The email associated with your Raunaq account — our admin team links your approved code to this account.</div>
+        <div class="error-msg" id="emailError">Please enter a valid email address.</div>
+      </div>
+
+      <!-- Monthly Weddings -->
+      <div class="form-group">
+        <label for="monthlyWeddings">Weddings Handled Per Month</label>
+        <input type="number" id="monthlyWeddings" name="monthly_weddings" min="0" placeholder="e.g. 8 (optional estimate)">
+        <div class="field-hint">Approximate number of wedding events you host, shoot, or decorate each month.</div>
+        <div class="error-msg" id="monthlyWeddingsError">Please enter 0 or a positive number.</div>
+      </div>
+
+      <!-- Message / Notes -->
+      <div class="form-group">
+        <label for="message">Message / Notes</label>
+        <textarea id="message" name="message" rows="4" placeholder="Tell us about your venues, photography packages, or any questions (optional)..."></textarea>
+      </div>
+
+      <!-- Caution Notice (Owner Requirement) -->
+      <div class="caution-box">
+        <div class="caution-header">
+          <span>⚠️ Important Notice / اہم نوٹ</span>
+        </div>
+        <p class="caution-text-en">
+          <strong>Please fill this form with care.</strong> Submitted details (name, business category, WhatsApp number, and account email) can only be altered later through direct contact with Raunaq Support.
+        </p>
+        <p class="caution-text-ur">
+          <strong>براہ کرم یہ فارم احتیاط سے پر کریں۔</strong> ارسال کردہ تفصیلات (نام، کاروباری قسم، واٹس ایپ نمبر اور اکاؤنٹ ای میل) بعد میں صرف رونق سپورٹ کے ذریعے ہی تبدیل کی جا سکتی ہیں۔
+        </p>
+      </div>
+
+      <!-- Submit Button (Disabled in Part 2a) -->
+      <button type="button" class="submit-btn" id="submitBtn" disabled>Submit Partner Application</button>
+      <p class="staged-note">Online applications open soon.</p>
+    </form>
+  </main>
+
+  <footer>
+    <p>© 2026 Raunaq (رونق). All rights reserved. • <a href="/privacy.html">Privacy Policy</a> • <a href="/terms.html">Terms of Service</a></p>
+  </footer>
+
+  <script>
+    // Client-side Validation (Plain JS)
+    (function() {
+      const applicantNameInput = document.getElementById('applicantName');
+      const businessTypeSelect = document.getElementById('businessType');
+      const cityInput = document.getElementById('city');
+      const whatsappInput = document.getElementById('whatsapp');
+      const emailInput = document.getElementById('email');
+      const monthlyWeddingsInput = document.getElementById('monthlyWeddings');
+
+      // Validation Regex Patterns
+      const whatsappPattern = /^(\+92[0-9]{10}|03[0-9]{9})$/;
+      const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+      function validateField(input, errorElement, condition) {
+        if (!condition) {
+          input.classList.add('input-error');
+          errorElement.style.display = 'block';
+          return false;
+        } else {
+          input.classList.remove('input-error');
+          errorElement.style.display = 'none';
+          return true;
+        }
+      }
+
+      function checkValidation() {
+        const isNameValid = validateField(
+          applicantNameInput,
+          document.getElementById('applicantNameError'),
+          applicantNameInput.value.trim().length > 0
+        );
+
+        const isTypeValid = validateField(
+          businessTypeSelect,
+          document.getElementById('businessTypeError'),
+          businessTypeSelect.value.length > 0
+        );
+
+        const isCityValid = validateField(
+          cityInput,
+          document.getElementById('cityError'),
+          cityInput.value.trim().length > 0
+        );
+
+        const cleanPhone = whatsappInput.value.replace(/\s+/g, '');
+        const isPhoneValid = validateField(
+          whatsappInput,
+          document.getElementById('whatsappError'),
+          whatsappPattern.test(cleanPhone)
+        );
+
+        const isEmailValid = validateField(
+          emailInput,
+          document.getElementById('emailError'),
+          emailPattern.test(emailInput.value.trim())
+        );
+
+        let isWeddingsValid = true;
+        const weddingsVal = monthlyWeddingsInput.value.trim();
+        if (weddingsVal.length > 0) {
+          const num = parseInt(weddingsVal, 10);
+          isWeddingsValid = validateField(
+            monthlyWeddingsInput,
+            document.getElementById('monthlyWeddingsError'),
+            !isNaN(num) && num >= 0
+          );
+        } else {
+          monthlyWeddingsInput.classList.remove('input-error');
+          document.getElementById('monthlyWeddingsError').style.display = 'none';
+        }
+
+        return isNameValid && isTypeValid && isCityValid && isPhoneValid && isEmailValid && isWeddingsValid;
+      }
+
+      // Realtime validation listeners on blur and input
+      applicantNameInput.addEventListener('blur', checkValidation);
+      businessTypeSelect.addEventListener('change', checkValidation);
+      cityInput.addEventListener('blur', checkValidation);
+      whatsappInput.addEventListener('blur', checkValidation);
+      emailInput.addEventListener('blur', checkValidation);
+      monthlyWeddingsInput.addEventListener('blur', checkValidation);
+    })();
+  </script>
+</body>
+</html>
