@@ -636,6 +636,15 @@
               localStorage.setItem(THROTTLE_STORAGE_KEY, Date.now().toString());
             } catch (e) {}
 
+            // Fire-and-forget notification email alert to admin/owner (failure does NOT fail submission or change screen)
+            try {
+              fetch('https://qsglzqpecupjemibjoem.supabase.co/functions/v1/notify-partner-application', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ application: payload })
+              }).catch(function() {});
+            } catch (notifyErr) {}
+
             // Success state: replace form with success message card
             container.innerHTML = `
               <div class="success-container">
