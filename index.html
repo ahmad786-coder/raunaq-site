@@ -493,39 +493,6 @@
       opacity: 0.9;
     }
 
-    .app-version-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 10px;
-      padding: 6px 14px;
-      background: rgba(212, 175, 55, 0.12);
-      border: 1px solid rgba(212, 175, 55, 0.35);
-      border-radius: 999px;
-      font-size: 0.82rem;
-      color: var(--gold-light);
-    }
-
-    .app-version-badge .update-btn {
-      color: var(--gold);
-      font-weight: 700;
-      text-decoration: underline;
-      margin-left: 6px;
-      transition: color 0.2s;
-    }
-
-    .app-version-badge .update-btn:hover {
-      color: #ffffff;
-    }
-
-    .app-update-notice {
-      display: block;
-      font-size: 0.78rem;
-      color: var(--gold-light);
-      margin-top: 4px;
-      opacity: 0.9;
-    }
-
     .hero-ctas {
       display: flex;
       flex-direction: column;
@@ -1353,11 +1320,6 @@
             <a href="https://github.com/ahmad786-coder/raunaq-site/releases/latest/download/Raunaq.apk" download class="btn btn-outline-gold hero-apk-btn">Download the Host App</a>
           </div>
           <div class="hero-apk-notes">
-            <div id="appVersionContainer" class="app-version-badge">
-              <span>Latest version: <strong id="latestVersionText">1.0.2+18</strong></span>
-              <a href="https://github.com/ahmad786-coder/raunaq-site/releases/latest/download/Raunaq.apk" download class="update-btn">Update app</a>
-            </div>
-            <span class="app-update-notice">A newer version is available.</span>
             <p class="apk-note-en">Installing from your browser may show a security scan prompt (Google Play Protect). That is normal for apps installed outside the Play Store — tap "Install anyway".</p>
             <p class="apk-note-ur">براؤزر سے انسٹال کرتے وقت سیکیورٹی اسکین کا پیغام آ سکتا ہے (Google Play Protect)۔ یہ عام بات ہے — "Install anyway" دبائیں۔</p>
           </div>
@@ -1790,28 +1752,6 @@
       } else {
         document.querySelectorAll('.reveal-item').forEach(function(el) { el.classList.add('is-revealed'); });
       }
-      // 4. Fetch latest app release tag dynamically
-      (function fetchLatestAppRelease() {
-        var verEl = document.getElementById('latestVersionText');
-        if (!verEl) return;
-        fetch('https://api.github.com/repos/ahmad786-coder/raunaq-site/releases/latest', {
-          headers: { 'Accept': 'application/vnd.github.v3+json' }
-        })
-        .then(function(res) {
-          if (!res.ok) throw new Error('Release fetch status: ' + res.status);
-          return res.json();
-        })
-        .then(function(data) {
-          if (data && data.tag_name) {
-            // Strip any prefix e.g. "app-v" or "v" if present
-            var cleanTag = data.tag_name.replace(/^(app-v|v)/, '');
-            verEl.textContent = cleanTag || data.tag_name;
-          }
-        })
-        .catch(function() {
-          // Graceful fallback: keeps existing hardcoded version
-        });
-      })();
     })();
   </script>
 </body>
