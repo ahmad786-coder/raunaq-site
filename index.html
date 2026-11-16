@@ -324,6 +324,11 @@
       position: absolute;
       top: 50%;
       left: 50%;
+      min-height: 1em;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-family: var(--font-urdu);
       font-size: clamp(14rem, 36vw, 32rem);
       color: var(--gold-base);
@@ -1311,7 +1316,10 @@
         <div class="hero-content">
           <p class="hero-badge">Real-Time Wedding Memory Collective</p>
           <div class="hero-emblem-wrap">
-            <img src="assets/raunaq-emblem-3d.png" alt="Raunaq 3D Emblem" class="hero-emblem-img" width="140" height="140">
+            <picture>
+              <source srcset="assets/raunaq-emblem-3d.webp" type="image/webp">
+              <img src="assets/raunaq-emblem-3d.png" alt="Raunaq 3D Emblem" class="hero-emblem-img" width="140" height="140">
+            </picture>
           </div>
           <h1 class="hero-title">Raunaq</h1>
           <!-- LOCKED URDU TAGLINE -->
