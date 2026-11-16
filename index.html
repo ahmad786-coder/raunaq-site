@@ -624,6 +624,8 @@
     .section-editorial {
       padding: 96px 0;
       position: relative;
+      content-visibility: auto;
+      contain-intrinsic-size: 1px 800px;
     }
 
     @media (min-width: 768px) {
@@ -1135,6 +1137,8 @@
       color: var(--cream-base);
       border-top: 1px solid rgba(198, 161, 91, 0.25);
       padding: 80px 0 40px;
+      content-visibility: auto;
+      contain-intrinsic-size: 1px 400px;
     }
 
     .footer-content {
@@ -1614,7 +1618,7 @@
        ========================================================================== -->
   
   <!-- FAQ SECTION -->
-  <section id="faq" class="section">
+  <section id="faq" class="section-editorial bg-cream">
     <div class="container">
       <div class="section-header">
         <div class="section-eyebrow">HELP & GUIDANCE</div>
@@ -1705,65 +1709,6 @@
   <!-- ==========================================================================
        CLIENT SCRIPT: INTERSECTION OBSERVER & TWO-STATE WHATSAPP HANDLER
        ========================================================================== -->
-  <script>
-    /* WhatsApp Number Configuration:
-       EMPTY state (""): buttons link to #book whose text informs user number is coming soon.
-       FILLED state ("92300..."): buttons link to https://wa.me/<number>?text=<prefilled message>.
-    */
-    const RAUNAQ_WHATSAPP_NUMBER = "923281728103";
-
-    (function() {
-      // 1. Mark JS active
-      document.documentElement.classList.add('js-active');
-
-      // 2. Wire WhatsApp Two-State Logic
-      var isFilled = typeof RAUNAQ_WHATSAPP_NUMBER === 'string' && RAUNAQ_WHATSAPP_NUMBER.trim().length > 0;
-      var cleanNumber = isFilled ? RAUNAQ_WHATSAPP_NUMBER.trim().replace(/[^0-9]/g, '') : '';
-
-      if (isFilled && cleanNumber.length > 0) {
-        // FILLED STATE: rewire booking and partner buttons to direct wa.me/<number>?text=...
-        document.querySelectorAll('.wa-booking-btn').forEach(function(el) {
-          var pkg = el.getAttribute('data-package') || 'Full Wedding';
-          var msg = "Assalam-o-Alaikum! I want to book Raunaq for our wedding celebration (" + pkg + " package). Please share availability.";
-          el.href = "https://wa.me/" + cleanNumber + "?text=" + encodeURIComponent(msg);
-          el.target = "_blank";
-          el.rel = "noopener";
-        });
-
-        document.querySelectorAll('.wa-partner-btn').forEach(function(el) {
-          var msg = "Assalam-o-Alaikum! I would like to partner with Raunaq for wedding bookings.";
-          el.href = "https://wa.me/" + cleanNumber + "?text=" + encodeURIComponent(msg);
-          el.target = "_blank";
-          el.rel = "noopener";
-        });
-      } else {
-        // EMPTY STATE: buttons strictly retain #book link targeting the fallback callout
-        document.querySelectorAll('.wa-booking-btn, .wa-partner-btn').forEach(function(el) {
-          el.href = "#book";
-          el.removeAttribute('target');
-          el.removeAttribute('rel');
-        });
-      }
-
-      // 3. Scroll reveals (<= 12 lines)
-      if ('IntersectionObserver' in window) {
-        var observer = new IntersectionObserver(function(entries) {
-          entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('is-revealed'); } });
-        }, { threshold: 0.12 });
-        document.querySelectorAll('.reveal-item').forEach(function(el) { observer.observe(el); });
-
-        var header = document.getElementById('stickyHeader');
-        var hero = document.getElementById('hero');
-        if (header && hero) {
-          var headerObserver = new IntersectionObserver(function(entries) {
-            header.classList.toggle('visible', !entries[0].isIntersecting);
-          }, { threshold: 0.1 });
-          headerObserver.observe(hero);
-        }
-      } else {
-        document.querySelectorAll('.reveal-item').forEach(function(el) { el.classList.add('is-revealed'); });
-      }
-    })();
-  </script>
+  <script src="assets/main.js" defer></script>
 </body>
 </html>
