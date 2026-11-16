@@ -57,11 +57,18 @@ const RAUNAQ_WHATSAPP_NUMBER = "923281728103";
   }
 
   // Defer non-critical DOM query and intersection observer work to idle time
-  if (typeof requestIdleCallback === 'function') {
-    requestIdleCallback(initInteractive, { timeout: 1500 });
-  } else if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initInteractive);
+  // Run purely when idle with no forced timeout deadline, or on user interaction/load
+  function scheduleInteractive() {
+    if (typeof requestIdleCallback === 'function') {
+      requestIdleCallback(initInteractive);
+    } else {
+      setTimeout(initInteractive, 200);
+    }
+  }
+
+  if (document.readyState === 'complete') {
+    scheduleInteractive();
   } else {
-    setTimeout(initInteractive, 50);
+    window.addEventListener('load', scheduleInteractive, { once: true });
   }
 })();
